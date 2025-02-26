@@ -74,7 +74,7 @@ class BookRepository {
         do {
             // Realiza la solicitud y maneja la respuesta
             let (data, _) = try await URLSession.shared.data(for: request)
-
+            
             guard let books = decodeBooks(from: data) else {
                 return []
             }
@@ -87,23 +87,23 @@ class BookRepository {
     }
     
     // Obtener un libro por ID
-        func getBookById(id: String) async throws -> Book {
-            let apiURL = "\(_baseURL)/books/\(id)"
-            
-            var request = URLRequest(url: URL(string: apiURL)!)
-            request.httpMethod = "GET"
-            request.allHTTPHeaderFields = createHeaders()
-            
-            do {
-                let (data, _) = try await URLSession.shared.data(for: request)
-                guard let book = decodeBook(from: data) else {
-                    throw URLError(.badServerResponse)
-                }
-                return book
-            } catch {
-                print("Error fetching book by id: \(error)")
-                throw error
+    func getBookById(id: String) async throws -> Book {
+        let apiURL = "\(_baseURL)/books/\(id)"
+        
+        var request = URLRequest(url: URL(string: apiURL)!)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = createHeaders()
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            guard let book = decodeBook(from: data) else {
+                throw URLError(.badServerResponse)
             }
+            return book
+        } catch {
+            print("Error fetching book by id: \(error)")
+            throw error
         }
+    }
     
 }
